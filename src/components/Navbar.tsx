@@ -50,28 +50,42 @@ const Navbar = () => {
               onClick={() => setIsOpen(!isOpen)}
               className="text-gray-300 hover:text-white p-2"
             >
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
+              <Menu size={24} />
             </button>
+          </div>
+
+          {/* Menu mobile */}
+          <div 
+            className={`
+              fixed top-0 right-0 h-full w-64 bg-gray-900/95 transform transition-transform duration-300 ease-in-out
+              ${isOpen ? 'translate-x-0' : 'translate-x-full'}
+              md:hidden
+            `}
+          >
+            <div className="flex justify-end p-4">
+              <button
+                onClick={() => setIsOpen(false)}
+                className="text-gray-300 hover:text-white p-2"
+              >
+                <X size={24} />
+              </button>
+            </div>
+            <div className="flex flex-col items-center pt-8 space-y-8">
+              {menuItems.map((item) => (
+                <a
+                  key={item}
+                  href={`#${item.toLowerCase()}`}
+                  onClick={() => setIsOpen(false)}
+                  className="text-gray-300 hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-purple-500 hover:via-pink-500 hover:to-red-500 relative group py-2"
+                >
+                  {item}
+                  <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 transition-all duration-200 group-hover:w-full"></span>
+                </a>
+              ))}
+            </div>
           </div>
         </div>
       </div>
-
-      {isOpen && (
-        <div className="md:hidden bg-gray-900/90">
-          <div className="px-2 pt-2 pb-3 space-y-1">
-            {menuItems.map((item) => (
-              <a
-                key={item}
-                href={`#${item.toLowerCase()}`}
-                className="block px-3 py-2 text-gray-300 hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-purple-500 hover:via-pink-500 hover:to-red-500 transition-colors duration-200"
-                onClick={() => setIsOpen(false)}
-              >
-                {item}
-              </a>
-            ))}
-          </div>
-        </div>
-      )}
     </nav>
   );
 };
