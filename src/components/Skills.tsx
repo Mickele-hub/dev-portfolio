@@ -50,26 +50,31 @@ const SkillCategory: React.FC<SkillCategoryProps> = ({ title, skills, icon: Icon
       initial={{ opacity: 0, y: 50 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, delay }}
-      className="bg-gray-800 p-4 sm:p-6 rounded-lg transform transition-all duration-300 hover:scale-105 hover:shadow-xl"
+      className="group relative bg-gray-800/50 backdrop-blur-sm p-6 rounded-2xl border border-gray-700/50 hover:border-purple-500/50 transition-all duration-300 hover:shadow-xl hover:shadow-purple-500/10 overflow-hidden"
     >
-      <div className="flex items-center mb-4">
-        <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-pink-500 mr-2" />
-        <h3 className="text-lg sm:text-xl font-semibold text-white">{title}</h3>
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      <div className="relative">
+        <div className="flex items-center mb-6">
+          <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-300">
+            <Icon className="w-6 h-6 text-white" />
+          </div>
+          <h3 className="text-xl font-semibold text-white">{title}</h3>
+        </div>
+        <ul className="space-y-3">
+          {skills.map((skill: string, index: number) => (
+            <motion.li
+              key={index}
+              className="text-gray-300 flex items-center p-3 rounded-xl hover:bg-gray-700/50 transition-all duration-300 text-sm sm:text-base group/skill"
+              whileHover={{ x: 8 }}
+            >
+              <span className="w-6 h-6 mr-3 flex items-center group-hover/skill:scale-110 transition-transform duration-300">
+                {getSkillIcon(skill)}
+              </span>
+              <span className="group-hover/skill:text-white transition-colors">{skill}</span>
+            </motion.li>
+          ))}
+        </ul>
       </div>
-      <ul className="space-y-2 sm:space-y-3">
-        {skills.map((skill: string, index: number) => (
-          <motion.li
-            key={index}
-            className="text-gray-300 flex items-center p-2 rounded-md hover:bg-gray-700 transition-all duration-300 text-sm sm:text-base"
-            whileHover={{ x: 10 }}
-          >
-            <span className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3 flex items-center">
-              {getSkillIcon(skill)}
-            </span>
-            {skill}
-          </motion.li>
-        ))}
-      </ul>
     </motion.div>
   );
 };
@@ -99,17 +104,33 @@ const Skills = () => {
   ];
 
   return (
-    <section id="skills" className="py-20 bg-gray-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-12 text-center text-transparent bg-clip-text bg-gradient-to-r from-purple-500 via-pink-500 to-red-500">
-          Compétences
-        </h2>
+    <section id="skills" className="py-20 sm:py-32 bg-gradient-to-b from-gray-900 to-gray-900 relative overflow-hidden">
+      {/* Decorative elements */}
+      <div className="absolute top-20 left-20 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl" />
+      <div className="absolute bottom-20 right-20 w-64 h-64 bg-pink-500/10 rounded-full blur-3xl" />
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+          className="text-center mb-16"
+        >
+          <span className="inline-block px-4 py-2 bg-purple-500/10 border border-purple-500/20 rounded-full text-purple-300 text-sm font-medium mb-4">
+            Mes compétences
+          </span>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-500 via-pink-500 to-red-500">
+            Technologies & Outils
+          </h2>
+        </motion.div>
+        
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
           {categories.map((category, index) => (
             <SkillCategory
               key={category.title}
               {...category}
-              delay={index * 0.2}
+              delay={index * 0.1}
             />
           ))}
         </div>
